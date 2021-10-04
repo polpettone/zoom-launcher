@@ -6,7 +6,7 @@ import (
 )
 
 type Zooms struct {
-	Entries map[string][]string
+	Entries map[string]string
 }
 
 func LoadZooms(file string) (*Zooms, error) {
