@@ -6,8 +6,6 @@ import (
 	"github.com/skratchdot/open-golang/open"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
 )
 
 func StartCmd() *cobra.Command {
@@ -26,7 +24,7 @@ func StartCmd() *cobra.Command {
 func handleStartCommand(meetingName string) error {
 
 	zoomsFile := viper.GetString(ZoomsFile)
-	zooms, err := loadZooms(zoomsFile)
+	zooms, err := LoadZooms(zoomsFile)
 
 	if err != nil {
 		return err
@@ -55,22 +53,6 @@ func handleStartCommand(meetingName string) error {
 	return nil
 }
 
-type Zooms struct {
-	Entries map[string][]string
-}
-
-func loadZooms(file string) (*Zooms, error) {
-	content, err := ioutil.ReadFile(file)
-	if err != nil {
-		return nil, err
-	}
-	zooms := &Zooms{}
-	err = yaml.Unmarshal(content, &zooms)
-	if err != nil {
-		return nil, err
-	}
-	return zooms, nil
-}
 
 func init() {
 	startCmd := StartCmd()
