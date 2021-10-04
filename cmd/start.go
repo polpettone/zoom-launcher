@@ -30,7 +30,7 @@ func handleStartCommand(meetingName string) error {
 		return err
 	}
 
-	link, found := zooms.Entries[meetingName]
+	link, found := zooms.Zooms[meetingName]
 
 	if found {
 		z, err := convert(link)

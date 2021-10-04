@@ -6,7 +6,7 @@ import (
 )
 
 const testCase0 = `
-entries:
+zooms:
     room1: link1
     room2: link2
 `
@@ -24,7 +24,7 @@ func Test_convertRawZoomsToZooms(t *testing.T) {
 			name: "happy path",
 			content: []byte(testCase0),
 			want: &Zooms{
-				Entries: map[string]string{"room1":"link1", "room2":"link2"},
+				Zooms: map[string]string{"room1":"link1", "room2":"link2"},
 			},
 			wantErr: false,
 		},
