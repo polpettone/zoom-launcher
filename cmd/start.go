@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/skratchdot/open-golang/open"
 	"github.com/spf13/cobra"
@@ -22,27 +23,25 @@ func StartCmd() *cobra.Command {
 	}
 }
 
-
-func handleStartCommand(meetingName string)  error {
+func handleStartCommand(meetingName string) error {
 
 	zoomsFile := viper.GetString(ZoomsFile)
 	zooms, err := loadZooms(zoomsFile)
 
 	if err != nil {
-		return  err
-	}
-
-	var keywords []string
-	for k, _ := range zooms.Entries {
-		keywords = append(keywords, k)
-	}
-	link := zooms.Entries[meetingName]
-	z := convert(link[0])
-
-	err = open.Run(z)
-
-	if err != nil {
 		return err
+	}
+
+	link, found := zooms.Entries[meetingName]
+
+	if found {
+		z := convert(link[0])
+		err = open.Run(z)
+		if err != nil {
+			return err
+		}
+	} else {
+		return errors.New(fmt.Sprintf("%s not Found", meetingName))
 	}
 	return nil
 }
