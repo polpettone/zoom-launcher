@@ -34,11 +34,20 @@ func handleStartCommand(meetingName string) error {
 
 	link, found := zooms.Entries[meetingName]
 
+	if len(link) != 1 {
+		return errors.New("zooms file broken")
+	}
+
 	if found {
-		z := convert(link[0])
-		err = open.Run(z)
+		z, err := convert(link[0])
+
 		if err != nil {
 			return err
+		}
+
+		err = open.Run(z)
+		if err != nil {
+			return errors.New(fmt.Sprintf("%s could not be open with zoom", z))
 		}
 	} else {
 		return errors.New(fmt.Sprintf("%s not Found", meetingName))
